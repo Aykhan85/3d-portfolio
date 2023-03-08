@@ -19,6 +19,7 @@ import redux from "./tech/redux.png";
 import tailwind from "./tech/tailwind.png";
 import threejs from "./tech/threejs.svg";
 import mui from "./tech/mui.png";
+import CV from "./Aykhan_Nematov_CV.pdf";
 
 import errorPage from "./404-not-found.png";
 import booking from "./booking.png";
@@ -54,4 +55,5 @@ export {
   interrior,
   teamPage,
   live,
+  CV,
 };
