@@ -1,54 +1,73 @@
 import Tilt from 'react-parallax-tilt'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { styles } from '../style'
 import { github, live } from '../assets'
 import { SectionWrapper } from '../hoc'
 import { projects } from '../constants'
-import { fadeIn, textVariant } from '../utils/motion'
+import { fadeIn, slideIn, textVariant } from '../utils/motion'
 
 const ProjectCard = ({ index, name, description, tags, image, source_code_link, live_demo_link }) => {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width:54.6875rem)');
+
+    setIsMobile(mediaQuery.matches)
+
+    const handleChange = (event) => {
+      setIsMobile(event.matches)
+    }
+
+    mediaQuery.addEventListener('change', handleChange)
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange)
+    }
+  }, [])
+
   return (
-    <motion.div variants={fadeIn('up', 'spring', index * 0.5, 0.75)}>
-      <Tilt
-        options={{ max: 45, scale: 1, speed: 450 }}
-        className='bg-tertiary px-5 pb-5 pt-2 rounded-2xl sm:w-[22.5rem] w-full'
-      >
-        <div className='flex gap-x-2 mb-4'>
-          <div
-            onClick={() => window.open(source_code_link, '_blank')}
-            className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
-            title='Github Repo'
-          >
-            <img src={github} alt='github' className='w-1/2 h-1/2' />
+    <div>
+
+      <motion.div variants={textVariant()}>
+        <Tilt
+          options={{ max: 45, scale: 1, speed: 450 }}
+          className='bg-tertiary px-5 pb-5 pt-2 rounded-2xl sm:w-[360px] w-full'>
+          <div className='flex gap-x-2 mb-4'>
+            <div
+              onClick={() => window.open(source_code_link, '_blank')}
+              className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
+              title='Github Repo'
+            >
+              <img src={github} alt='github' className='w-1/2 h-1/2' />
+            </div>
+
+            {live_demo_link && <div
+              onClick={() => window.open(live_demo_link, '_blank')}
+              className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
+              title='Live Demo'
+            >
+              <img src={live} alt='live' className='w-1/2 h-1/2' />
+            </div>}
+          </div>
+          <div className='w-full h-[230px]'>
+            <img src={image} className='w-full h-full object-cover object-left-top rounded-2xl ' />
           </div>
 
-          {live_demo_link && <div
-            onClick={() => window.open(live_demo_link, '_blank')}
-            className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
-            title='Live Demo'
-          >
-            <img src={live} alt='github' className='w-1/2 h-1/2' />
-          </div>}
-        </div>
-        <div className='relative w-full h-[14.375rem] '>
-          <img src={image} alt={name} className='w-full h-full object-cover rounded-2xl' />
-          <div className='absolute inset-0 flex justify-end m-3 card-img_hover gap-1'>
-            {/*  */}
+          <div className='mt-5'>
+            <h3 className='text-white font-bold text-[1.5rem]'>{name}</h3>
+            <p lassName='mt-2 text-secondary text-[0.875rem]'>{description}</p>
           </div>
-        </div>
 
-        <div className='mt-5'>
-          <h3 className='text-white font-bold text-[1.5rem]'>{name}</h3>
-          <p lassName='mt-2 text-secondary text-[0.875rem]'>{description}</p>
-        </div>
+          <div className='mt-4 flex flex-wrap gap-2'>
+            {tags.map(tag => (
+              <p key={tag.name} className={`text-[14px] ${tag.color}`}>#{tag.name}</p>
+            ))}
+          </div>
+        </Tilt>
+      </motion.div>
+    </div>
 
-        <div className='mt-4 flex flex-wrap gap-2'>
-          {tags.map(tag => (
-            <p key={tag.name} className={`text-[14px] ${tag.color}`}>#{tag.name}</p>
-          ))}
-        </div>
-      </Tilt>
-    </motion.div>
   )
 }
 
