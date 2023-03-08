@@ -7,7 +7,7 @@ const Navbar = () => {
   const [active, setActive] = useState('')
   const [toggle, setToggle] = useState(false)
   const [isHidden, setIsHidden] = useState(false);
-  console.log(isHidden)
+
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width:44.625rem)');
 
